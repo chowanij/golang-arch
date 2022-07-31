@@ -16,7 +16,7 @@ func main() {
 		First: "Jenny",
 	}
 
-	p2 := person {
+	p2 := person{
 		First: "James",
 	}
 
@@ -39,6 +39,8 @@ func main() {
 
 	http.HandleFunc("/encode", foo)
 	http.HandleFunc("/decode", bar)
+	http.HandleFunc("/encode/persons", encodePerson)
+	http.HandleFunc("/decode/persons", decodePersons)
 	http.ListenAndServe(":8080", nil)
 
 }
@@ -62,6 +64,33 @@ func bar(w http.ResponseWriter, r *http.Request) {
 		log.Println("Decode bad data", err)
 	}
 	log.Println("Person", p1)
-	
-	
+}
+
+func encodePerson(w http.ResponseWriter, r *http.Request) {
+	persons := []person{
+		{
+			First: "Jenny",
+		},
+		{
+			First: "Jennys",
+		},
+		{
+			First: "Johnes",
+		},
+	}
+
+	err := json.NewEncoder(w).Encode(persons)
+	if err != nil {
+		log.Println("Encoded bad data", err)
+	}
+
+}
+
+func decodePersons(w http.ResponseWriter, r *http.Request) {
+	persons := []person{}
+	err := json.NewDecoder(r.Body).Decode(&persons)
+	if err != nil {
+		log.Println("Decode bad data", err)
+	}
+	log.Println("Person", persons)
 }
