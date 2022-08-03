@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,6 +13,7 @@ type person struct {
 }
 
 func main() {
+	base64Encode()
 	p1 := person{
 		First: "Jenny",
 	}
@@ -62,6 +64,9 @@ func bar(w http.ResponseWriter, r *http.Request) {
 		log.Println("Decode bad data", err)
 	}
 	log.Println("Person", p1)
-	
-	
+}
+
+func base64Encode() {
+	fmt.Println("encode string to 64 demo")
+	fmt.Println(base64.StdEncoding.EncodeToString([]byte("user:pass")))
 }
